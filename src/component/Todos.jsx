@@ -6,7 +6,7 @@ export default function Todos() {
 
   return (
     <div className="container" id="users">
-      Todos
+      <h1>Todos: {todo.length}</h1>
     </div>
   );
 }
