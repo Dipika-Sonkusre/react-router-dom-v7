@@ -5,6 +5,9 @@ import TodoDetails from "../component/TodoDetails";
 import Todos from "../component/Todos";
 import CreateTodo from "../component/CreateTodo";
 import { ApiEndpoint } from "../enum";
+import ProtectedLayout from "../component/ProtectedLayout";
+import Login from "../component/auth/Login";
+import { authLoader } from "../utils/loaders";
 
 export const router = createBrowserRouter([
   {
@@ -14,21 +17,38 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+        errorElement: <div>Something went wrong!</div>,
       },
       {
-        path: ApiEndpoint.TODOS,
-        Component: Todos,
-        loader: todosLoader,
+        path: ApiEndpoint.LOGIN,
+        Component: Login,
+        errorElement: <div>Something went wrong!</div>,
       },
+
+      // Protected layout
       {
-        path: ApiEndpoint.TODO_DETAILS,
-        Component: TodoDetails,
-        loader: todoDetailsLoader,
-      },
-      {
-        path: ApiEndpoint.TODO_CREATE,
-        Component: CreateTodo,
-        action: createTodoAction,
+        Component: ProtectedLayout,
+        loader: authLoader,
+        children: [
+          {
+            path: ApiEndpoint.TODOS,
+            Component: Todos,
+            loader: todosLoader,
+            errorElement: <div>Something went wrong!</div>,
+          },
+          {
+            path: ApiEndpoint.TODO_DETAILS,
+            Component: TodoDetails,
+            loader: todoDetailsLoader,
+            errorElement: <div>Something went wrong!</div>,
+          },
+          {
+            path: ApiEndpoint.TODO_CREATE,
+            Component: CreateTodo,
+            action: createTodoAction,
+            errorElement: <div>Something went wrong!</div>,
+          },
+        ],
       },
     ],
   },
