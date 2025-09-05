@@ -16,7 +16,7 @@ export default function TodoDetails() {
         {todo.userId}
       </p>
       <p>
-        <b>Title:</b> &nbsp;
+        <b>Title: </b> &nbsp;
         {todo.title}
       </p>
     </div>

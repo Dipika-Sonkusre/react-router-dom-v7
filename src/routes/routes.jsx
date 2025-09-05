@@ -7,7 +7,12 @@ import CreateTodo from "../component/CreateTodo";
 import { ApiEndpoint } from "../enum";
 import ProtectedLayout from "../component/ProtectedLayout";
 import Login from "../component/auth/Login";
-import { authLoader } from "../utils/loaders";
+import { authLoader, roleLoader } from "../utils/loaders";
+import AdminLayout from "../component/AdminLayout";
+import AdminDashboard from "../component/AdminDashboard";
+import SuperAdminLayout from "../component/SuperAdminLayout";
+import SuperAdminDashboard from "../component/SuperAdminDashboard";
+import ManageAdmins from "../component/ManageAdmins";
 
 export const router = createBrowserRouter([
   {
@@ -42,10 +47,41 @@ export const router = createBrowserRouter([
             loader: todoDetailsLoader,
             errorElement: <div>Something went wrong!</div>,
           },
+        ],
+      },
+
+      // Admin layout
+      {
+        Component: AdminLayout,
+        loader: roleLoader("admin"),
+        children: [
           {
             path: ApiEndpoint.TODO_CREATE,
             Component: CreateTodo,
             action: createTodoAction,
+            errorElement: <div>Something went wrong!</div>,
+          },
+          {
+            path: ApiEndpoint.ADMIN_DASHBOARD,
+            Component: AdminDashboard,
+            errorElement: <div>Something went wrong!</div>,
+          },
+        ],
+      },
+
+      // Super Admin layout
+      {
+        Component: SuperAdminLayout,
+        loader: roleLoader("super-admin"),
+        children: [
+          {
+            path: ApiEndpoint.SUPER_ADMIN_DASHBOARD,
+            Component: SuperAdminDashboard,
+            errorElement: <div>Something went wrong!</div>,
+          },
+          {
+            path: ApiEndpoint.MANAGE_ADMINS,
+            Component: ManageAdmins,
             errorElement: <div>Something went wrong!</div>,
           },
         ],
